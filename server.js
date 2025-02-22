@@ -17,11 +17,26 @@ const adminUserRoutes = require("./routes/admin/adminUserRoutes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.json());
-app.use(cors());
+// ✅ Middleware to Allow CORS (Fix for Safari & Mobile)
+app.use(cors({
+  origin: "https://your-frontend.vercel.app", // Replace with your actual frontend URL
+  credentials: true
+}));
 
-// Connect to MongoDB Atlas
+// ✅ Allow Private Network Access for Chrome 130+ and Safari
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Private-Network", "true");
+  res.setHeader("Access-Control-Allow-Origin", "https://your-frontend.vercel.app");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
+// Middleware to Parse JSON
+app.use(express.json());
+
+// ✅ Connect to MongoDB Atlas
 mongoose
   .connect(process.env.MONGO_URI, { dbName: "hotel_management" })
   .then(() => console.log("✅ Connected to MongoDB Atlas"))
@@ -39,7 +54,7 @@ app.use("/api/admin/food", adminFoodMenuRoutes);
 app.use("/api/customer/food", customerFoodMenuRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
 app.use("/api/customer/orders", customerOrderRoutes);
-app.use("/api/admin/bookings", adminBookingRoutes); //Admin Route to view booking history
+app.use("/api/admin/bookings", adminBookingRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin/users", adminUserRoutes);
 
