@@ -19,14 +19,14 @@ const PORT = process.env.PORT || 3000;
 
 // ✅ Middleware to Allow CORS (Fix for Safari & Mobile)
 app.use(cors({
-  origin: "https://your-frontend.vercel.app", // Replace with your actual frontend URL
+  origin: "https://hotel-management-frontend-six.vercel.app", // Replace with your actual frontend URL
   credentials: true
 }));
 
 // ✅ Allow Private Network Access for Chrome 130+ and Safari
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Private-Network", "true");
-  res.setHeader("Access-Control-Allow-Origin", "https://your-frontend.vercel.app");
+  res.setHeader("Access-Control-Allow-Origin", "https://hotel-management-frontend-six.vercel.app");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.setHeader("Access-Control-Allow-Credentials", "true");
