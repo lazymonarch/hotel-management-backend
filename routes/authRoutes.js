@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose"); // Import mongoose
 const User = require("../models/User"); // Assuming you create a User model
@@ -27,7 +27,7 @@ router.post("/register", async (req, res) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
+    const hashedPassword = bcrypt.hashSync(password, 10); // 10 is the salt rounds
 
     // Create new user
     const newUser = new User({
@@ -57,7 +57,7 @@ router.post("/login", async (req, res) => {
     }
 
     // Compare passwords
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = bcrypt.compareSync(password, user.password);
     if (!passwordMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
