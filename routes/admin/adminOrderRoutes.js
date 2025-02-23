@@ -6,9 +6,6 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const orders = await Order.find()
-      .populate("roomId")
-      .populate("foodItems")
-      .populate("customer", "username"); // Populate customer information
     res.json(orders);
   } catch (error) {
     console.error("Error fetching orders:", error);
@@ -25,9 +22,6 @@ router.put("/:id", async (req, res) => {
       { status },
       { new: true }
     )
-      .populate("roomId")
-      .populate("foodItems")
-      .populate("customer", "username"); // Populate customer information
     if (!updatedOrder) {
       return res.status(404).json({ message: "Order not found" });
     }
