@@ -11,6 +11,7 @@ router.get("/", async (req, res) => {
       .populate("customer", "username"); // Populate customer information
     res.json(orders);
   } catch (error) {
+    console.error("Error fetching orders:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -32,6 +33,7 @@ router.put("/:id", async (req, res) => {
     }
     res.json({ message: "Order status updated successfully", order: updatedOrder });
   } catch (error) {
+    console.error("Error updating order status:", error);
     res.status(400).json({ error: error.message });
   }
 });
